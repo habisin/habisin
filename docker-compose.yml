@@ -1,0 +1,37 @@
+services:
+  habisin:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: habisin
+    env_file: ".env"
+    volumes:
+      - habisin_app:/var/www/html
+    depends_on:
+      - mariadb
+
+  nginx:
+    image: nginx:1.25
+    container_name: habisin-nginx
+    ports:
+      - "9090:80"
+    volumes:
+      - habisin_app:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - habisin
+
+  mariadb:
+    image: mariadb:10.6
+    container_name: habisin-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: habisin
+      MYSQL_USER: habisin
+      MYSQL_PASSWORD: habisin
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+volumes:
+  mariadb-data:
+  habisin_app:

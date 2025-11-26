@@ -1,0 +1,22 @@
+# Git repository files
+.git
+.gitignore
+
+# Docker compose file
+docker-compose.yml
+docker-compose.*.yml
+
+# Environment files
+.env
+.env.*
+
+# Dependencies
+node_modules
+vendor
+
+# Laravel
+storage/logs
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+bootstrap/cache
