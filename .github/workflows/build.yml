@@ -1,0 +1,46 @@
+name: Build & Push Docker Image
+
+on:
+  push:
+    branches:
+      - dev
+      - prod
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set tag based on branch
+        id: vars
+        run: |
+          BRANCH="${GITHUB_REF##*/}"
+          echo "TAG=$BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Login to registry using token
+        run: |
+          echo "${{ secrets.REGISTRY_TOKEN }}" | docker login git.folflabs.com \
+            -u "${{ secrets.REGISTRY_USERNAME }}" \
+            --password-stdin
+
+      - name: Build the Docker image
+        run: |
+          docker build \
+            -f docker/php/Dockerfile \
+            -t git.folflabs.com/folfcoder/habisin:${{ steps.vars.outputs.TAG }} \
+            .
+
+      - name: Push image
+        run: |
+          docker push git.folflabs.com/folfcoder/habisin:${{ steps.vars.outputs.TAG }}
+
+      - name: Tag & push latest (prod only)
+        if: github.ref == 'refs/heads/prod'
+        run: |
+          docker tag git.folflabs.com/folfcoder/habisin:prod \
+                     git.folflabs.com/folfcoder/habisin:latest
+
+          docker push git.folflabs.com/folfcoder/habisin:latest
