@@ -25,15 +25,19 @@ COPY docker/php/php.ini /usr/local/etc/php/php.ini
 # --- Copy custom my.cnf ---
 COPY docker/php/my.cnf /etc/mysql/my.cnf
 
-# --- Permissions ---
-RUN chown -R www-data:www-data /var/www/html
-
 # --- Create Laravel directories ---
 RUN mkdir -p /var/www/html/storage/logs \
     /var/www/html/storage/framework/cache \
     /var/www/html/storage/framework/sessions \
     /var/www/html/storage/framework/views \
     /var/www/html/bootstrap/cache
+
+# --- Set proper permissions ---
+RUN chown -R www-data:www-data /var/www/html \
+    && find /var/www/html/storage -type f -exec chmod 664 {} \; \
+    && find /var/www/html/storage -type d -exec chmod 775 {} \; \
+    && find /var/www/html/bootstrap/cache -type f -exec chmod 664 {} \; \
+    && find /var/www/html/bootstrap/cache -type d -exec chmod 775 {} \;
 
 # --- Production optimizations ---
 RUN composer install --no-dev --optimize-autoloader --no-interaction
