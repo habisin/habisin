@@ -25,7 +25,9 @@
                 <option value="merchant" {{ $user->role == 'merchant' ? 'selected' : '' }}>Merchant / Pemilik Toko</option>
             </select>
 
-            <x-input-error :messages="$errors->get('role')" class="mt-2" />
+            <p class="text-sm text-gray-500 mt-1">
+                {{ __('Your account type cannot be changed.') }}
+            </p>
         </div>
 
         <div>
