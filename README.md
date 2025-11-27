@@ -1,5 +1,10 @@
 # HabisIn
 
+![Laravel Version](https://img.shields.io/badge/Laravel-v11.x-FF2D20?style=for-the-badge&logo=laravel)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/habisin/habisin/build.yml?branch=prod&style=for-the-badge)
+[![habisin:dev](https://img.shields.io/badge/docker-habisin:latest-blue?style=for-the-badge&logo=docker&logoColor=white)](https://git.folflabs.com/folfcoder/-/packages/container/habisin/latest)
+
+
 Platform marketplace yang menghubungkan penjual (restoran, cafe, UMKM, katering) dengan pembeli untuk menjual makanan sisa yang masih layak konsumsi dengan harga lebih murah.
 
 Dengan mengurangi food waste, HabisIn mendukung SDG 2 (Zero Hunger) serta SDG 12 (Responsible Consumption and Production)
