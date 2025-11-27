@@ -42,10 +42,6 @@ RUN chown -R www-data:www-data /var/www/html \
 # --- Production optimizations ---
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
-
 EXPOSE 9000
 
 CMD ["php-fpm"]
