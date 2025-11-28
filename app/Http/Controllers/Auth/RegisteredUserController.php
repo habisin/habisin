@@ -47,6 +47,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        // Merchant onboarding
+        if ($user->role === 'merchant') {
+            return redirect()->route('merchant.onboarding');
+        }
         return redirect(route('dashboard', absolute: false));
     }
 }

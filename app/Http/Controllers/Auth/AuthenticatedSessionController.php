@@ -28,6 +28,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // If user is a merchant, redirect to merchant dashboard
+        if (auth()->user()->role === 'merchant') {
+            return redirect()->route('merchant.dashboard');
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
