@@ -55,7 +55,7 @@
         <div class="bg-white rounded-lg shadow p-6">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-semibold">Produk Tersedia</h2>
-                <a href="#"
+                <a href="{{ route('merchant.products.create') }}"
                    class="px-4 py-2 bg-indigo-600 text-white rounded-md">
                     + Tambah Produk
                 </a>
@@ -80,7 +80,7 @@
                             <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
                             <td>{{ $product->stock }}</td>
                             <td>
-                                <a href="#"
+                                <a href="{{ route('merchant.products.edit', $product) }}"
                                    class="text-indigo-600">Edit</a>
                             </td>
                         </tr>
