@@ -36,6 +36,10 @@ Route::middleware(['auth', 'role:merchant'])
 
         Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
         Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    
+        // Orders management
+        Route::get('/orders', [App\Http\Controllers\OrderController::class, 'shopOrders'])->name('orders');
+        Route::put('/orders/{order}', [App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');
     });
 
 require __DIR__.'/auth.php';

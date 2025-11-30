@@ -16,7 +16,11 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+            @if (auth()->user()->role === 'merchant')
+                @include('layouts.navigation.merchant')
+            @else
+                @include('layouts.navigation.buyer')
+            @endif
 
             <!-- Page Heading -->
             @isset($header)
