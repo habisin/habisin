@@ -40,6 +40,13 @@ Route::middleware(['auth', 'role:merchant'])
         // Orders management
         Route::get('/orders', [App\Http\Controllers\OrderController::class, 'shopOrders'])->name('orders');
         Route::put('/orders/{order}', [App\Http\Controllers\OrderController::class, 'update'])->name('orders.update');
-    });
+});
+
+Route::middleware(['auth', 'role:user'])
+    ->name('buyer.')
+    ->group(function () {
+        // Buyer routes can be added here
+        Route::get('/shops', [ShopController::class, 'publicList'])->name('shops');
+});
 
 require __DIR__.'/auth.php';

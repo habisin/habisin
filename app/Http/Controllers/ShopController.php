@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
-    public function onboarding() {
+    public function onboarding()
+    {
         // Check if the user already has a shop
         $shop = auth()->user()->shop;
         if ($shop) {
@@ -17,7 +18,8 @@ class ShopController extends Controller
         return view('merchant.onboarding');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         // Validate and store shop data
         $request->validate([
             'name' => 'required|string|max:255',
@@ -34,23 +36,24 @@ class ShopController extends Controller
         }
 
         $shop = Shop::create([
-            'user_id'       => auth()->id(),
-            'name'          => $request->name,
-            'description'   => $request->description,
-            'address'       => $request->address,
-            'latitude'      => $request->latitude,
-            'longitude'     => $request->longitude,
-            'logo'          => $logoPath,
-            'is_active'     => false,
-            'balance'       => 0,
+            'user_id' => auth()->id(),
+            'name' => $request->name,
+            'description' => $request->description,
+            'address' => $request->address,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'logo' => $logoPath,
+            'is_active' => false,
+            'balance' => 0,
         ]);
 
         return redirect()
             ->route('merchant.dashboard')
-            ->with('success','Toko berhasil dibuat dan sudah aktif. Selamat berjualan 🎉');
+            ->with('success', 'Toko berhasil dibuat dan sudah aktif. Selamat berjualan 🎉');
     }
 
-    function dashboard() {
+    function dashboard()
+    {
         $shop = auth()->user()->shop;
 
         if (!$shop) {
@@ -65,4 +68,42 @@ class ShopController extends Controller
 
         return view('merchant.dashboard', compact('shop', 'totalProducts', 'totalSales', 'totalRevenue'));
     }
+
+    public function publicList(Request $request) {
+        $query = Shop::where('is_active', true);
+
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('description', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // Jika user mengirim lat/lng → hitung jarak di SQL
+        if ($request->lat && $request->lng) {
+            $lat = $request->lat;
+            $lng = $request->lng;
+
+            $query->selectRaw("
+                id, name, logo, description, address, latitude, longitude,
+                (
+                    6371 * acos(
+                        cos(radians(?)) *
+                        cos(radians(latitude)) *
+                        cos(radians(longitude) - radians(?)) +
+                        sin(radians(?)) *
+                        sin(radians(latitude))
+                    )
+                ) AS distance
+            ", [$lat, $lng, $lat]);
+
+            // Urutkan berdasarkan jarak terdekat
+            $query->orderBy('distance', 'asc');
+        }
+
+        $shops = $query->paginate(10)->withQueryString();
+
+        return view('buyer.shops', compact('shops'));
+    }
+
 }
