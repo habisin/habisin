@@ -7,29 +7,52 @@
 
         {{-- Shop Summary Card --}}
         <div class="bg-white rounded-lg shadow p-6 mb-8">
-            <h2 class="text-xl font-semibold text-gray-800">
-                Informasi Toko
-            </h2>
 
-            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                    <p class="text-gray-500">Nama Toko</p>
-                    <p class="font-bold text-lg">{{ $shop->name }}</p>
+            <div class="flex flex-col md:flex-row gap-6 items-start md:items-center">
+
+                {{-- LOGO TOKO --}}
+                <img src="{{ $shop->logo ? Storage::url($shop->logo) : asset('images/no_image.jpg') }}"
+                    class="w-24 h-24 object-cover rounded-lg border" alt="Logo Toko">
+
+                {{-- INFO --}}
+                <div class="flex-1">
+                    <h2 class="text-xl font-semibold text-gray-800">
+                        Informasi Toko
+                    </h2>
+
+                    <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <p class="text-gray-500">Nama Toko</p>
+                            <p class="font-bold text-lg">{{ $shop->name }}</p>
+                        </div>
+
+                        <div>
+                            <p class="text-gray-500">Saldo</p>
+                            <p class="font-bold text-lg text-green-600">
+                                Rp {{ number_format($shop->balance, 0, ',', '.') }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <p class="text-gray-500">Alamat</p>
+                            <p class="text-sm">{{ $shop->address }}</p>
+                        </div>
+                    </div>
                 </div>
 
+                {{-- ACTION --}}
                 <div>
-                    <p class="text-gray-500">Saldo</p>
-                    <p class="font-bold text-lg text-green-600">
-                        Rp {{ number_format($shop->balance, 0, ',', '.') }}
-                    </p>
+                    <a href="{{ route('merchant.shop.edit') }}"
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        Edit Toko
+                    </a>
                 </div>
 
-                <div>
-                    <p class="text-gray-500">Alamat</p>
-                    <p class="font-bold text-lg">{{ $shop->address }}</p>
-                </div>
             </div>
+
         </div>
+
 
         {{-- Stats --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -55,8 +78,7 @@
         <div class="bg-white rounded-lg shadow p-6">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-semibold">Produk Tersedia</h2>
-                <a href="{{ route('merchant.products.create') }}"
-                   class="px-4 py-2 bg-indigo-600 text-white rounded-md">
+                <a href="{{ route('merchant.products.create') }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md">
                     + Tambah Produk
                 </a>
             </div>
@@ -75,15 +97,14 @@
                     </thead>
                     <tbody>
                         @foreach ($shop->products as $product)
-                        <tr class="border-b">
-                            <td class="py-3">{{ $product->name }}</td>
-                            <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
-                            <td>{{ $product->stock }}</td>
-                            <td>
-                                <a href="{{ route('merchant.products.edit', $product) }}"
-                                   class="text-indigo-600">Edit</a>
-                            </td>
-                        </tr>
+                            <tr class="border-b">
+                                <td class="py-3">{{ $product->name }}</td>
+                                <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+                                <td>{{ $product->stock }}</td>
+                                <td>
+                                    <a href="{{ route('merchant.products.edit', $product) }}" class="text-indigo-600">Edit</a>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>

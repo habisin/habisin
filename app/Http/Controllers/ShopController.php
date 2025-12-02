@@ -69,13 +69,14 @@ class ShopController extends Controller
         return view('merchant.dashboard', compact('shop', 'totalProducts', 'totalSales', 'totalRevenue'));
     }
 
-    public function publicList(Request $request) {
+    public function publicList(Request $request)
+    {
         $query = Shop::where('is_active', true);
 
         if ($request->search) {
-            $query->where(function($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
-                ->orWhere('description', 'like', '%' . $request->search . '%');
+                    ->orWhere('description', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -106,9 +107,10 @@ class ShopController extends Controller
         return view('buyer.shop.index', compact('shops'));
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $shop = Shop::with([
-            'products' => function($query) {
+            'products' => function ($query) {
                 // Hanya produk yang aktif dan tersedia
                 $query->where('is_active', true)->where('stock', '>', 0);
             }
@@ -116,4 +118,37 @@ class ShopController extends Controller
 
         return view('buyer.shop.show', compact('shop'));
     }
+
+    public function edit()
+    {
+        $shop = auth()->user()->shop;
+        return view('merchant.shop.edit', compact('shop'));
+    }
+
+    public function update(Request $request)
+    {
+        $shop = auth()->user()->shop;
+
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'address' => 'required|string',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'logo' => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('shop_logos');
+        }
+
+        $data['is_active'] = $request->has('is_active');
+
+        $shop->update($data);
+
+        return redirect()
+            ->route('merchant.dashboard')
+            ->with('success', 'Toko berhasil diperbarui!');
+    }
+
 }

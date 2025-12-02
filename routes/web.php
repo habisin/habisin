@@ -27,6 +27,10 @@ Route::middleware(['auth', 'role:merchant'])
         Route::get('/onboarding', [ShopController::class, 'onboarding'])->name('onboarding');
         Route::post('/onboarding', [ShopController::class, 'store'])->name('onboarding.store');
 
+        // Shop edit
+        Route::get('/shop/edit', [ShopController::class, 'edit'])->name('shop.edit');
+        Route::put('/shop', [ShopController::class, 'update'])->name('shop.update');
+
         // Merchant dashboard
         Route::get('/dashboard', [ShopController::class, 'dashboard'])->name('dashboard');
 
