@@ -103,7 +103,17 @@ class ShopController extends Controller
 
         $shops = $query->paginate(10)->withQueryString();
 
-        return view('buyer.shops', compact('shops'));
+        return view('buyer.shop.index', compact('shops'));
     }
 
+    public function show($id) {
+        $shop = Shop::with([
+            'products' => function($query) {
+                // Hanya produk yang aktif dan tersedia
+                $query->where('is_active', true)->where('stock', '>', 0);
+            }
+        ])->findOrFail($id);
+
+        return view('buyer.shop.show', compact('shop'));
+    }
 }

@@ -47,6 +47,8 @@ Route::middleware(['auth', 'role:user'])
     ->group(function () {
         // Buyer routes can be added here
         Route::get('/shops', [ShopController::class, 'publicList'])->name('shops');
+        Route::get('/shops/{shop}', [ShopController::class, 'show'])->name('shops.show');
+        Route::post('/order/checkout')->name('order.checkout'); // To be implemented
 });
 
 require __DIR__.'/auth.php';

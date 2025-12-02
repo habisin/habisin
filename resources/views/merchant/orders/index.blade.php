@@ -49,14 +49,31 @@
                                 @method('PUT')
 
                                 <select name="status"
-                                    class="border rounded-md px-5 py-2 text-sm w-40"
+                                    class="border rounded-md px-5 py-2 text-sm w-40
+                                        {{ in_array($order->status, ['completed','cancelled']) ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : '' }}"
                                     onchange="this.form.submit()"
                                     @click.stop
+                                    {{ in_array($order->status, ['completed', 'cancelled']) ? 'disabled' : '' }}
                                 >
-                                    <option value="pending"     {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="processing"  {{ $order->status === 'processing' ? 'selected' : '' }}>Diproses</option>
-                                    <option value="completed"   {{ $order->status === 'completed' ? 'selected' : '' }}>Selesai</option>
-                                    <option value="cancelled"   {{ $order->status === 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
+                                    @php
+                                    $transitions = [
+                                        'pending' => ['processing', 'cancelled'],
+                                        'processing' => ['completed', 'cancelled'],
+                                        'completed' => [],
+                                        'cancelled' => [],
+                                    ];
+                                    @endphp
+
+                                    <option selected disabled>
+                                        {{ ucfirst($order->status) }}
+                                    </option>
+
+                                    @foreach ($transitions[$order->status] as $next)
+                                        <option value="{{ $next }}">
+                                            {{ ucfirst($next) }}
+                                        </option>
+                                    @endforeach
+
                                 </select>
                             </form>
 

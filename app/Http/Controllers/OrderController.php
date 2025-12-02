@@ -16,7 +16,7 @@ class OrderController extends Controller
             return redirect()->route('merchant.onboarding');
         }
 
-        $orders = $shop->orders;
+        $orders = $shop->orders()->where('status', '!=', 'pending')->get();
         return view('merchant.orders.index', compact('shop', 'orders'));
     }
 
@@ -24,6 +24,21 @@ class OrderController extends Controller
         $request->validate([
             'status' => 'required|string|in:pending,processing,completed,cancelled',
         ]);
+
+        // Valid transitions
+        $allowedTransitions = [
+            'pending' => ['processing', 'cancelled'],
+            'processing' => ['completed', 'cancelled'],
+            'completed' => [],
+            'cancelled' => []
+        ];
+
+        $currentStatus = $order->status;
+        $newStatus = $request->status;
+
+        if (!isset($allowedTransitions[$currentStatus]) || !in_array($newStatus, $allowedTransitions[$currentStatus])) {
+            return back()->withErrors(['status' => 'Invalid status transition']);
+        }
 
         $order->update([
             'status'=> $request->status
