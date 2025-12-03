@@ -62,15 +62,39 @@
             </div>
 
             <div class="bg-white shadow rounded-lg p-6">
-                <p class="text-gray-500">Total Penjualan</p>
+                <p class="text-gray-500">
+                    Total Penjualan
+                    <span class="relative group inline-block">
+                        <i class="fa-solid fa-circle-info text-gray-400 cursor-pointer"></i>
+
+                        <!-- Tooltip -->
+                        <span class="absolute left-1/2 -translate-x-1/2 mt-2 hidden group-hover:block 
+                       whitespace-nowrap bg-gray-800 text-white text-xs 
+                       rounded py-1 px-2 z-50 shadow-lg">
+                            Total penjualan yang telah diselesaikan oleh toko Anda.
+                        </span>
+                    </span>
+                </p>
+
                 <p class="text-3xl font-bold">{{ $totalSales }}</p>
             </div>
 
             <div class="bg-white shadow rounded-lg p-6">
-                <p class="text-gray-500">Total Pendapatan</p>
-                <p class="text-3xl font-bold text-green-600">
-                    Rp {{ number_format($totalRevenue, 0, ',', '.') }}
+                <p class="text-gray-500">
+                    Total Pendapatan
+                    <span class="relative group inline-block">
+                        <i class="fa-solid fa-circle-info text-gray-400 cursor-pointer"></i>
+
+                        <!-- Tooltip -->
+                        <span class="absolute left-1/2 -translate-x-1/2 mt-2 hidden group-hover:block 
+                       whitespace-nowrap bg-gray-800 text-white text-xs 
+                       rounded py-1 px-2 z-50 shadow-lg">
+                            Total pendapatan dari penjualan yang telah diselesaikan oleh toko Anda.
+                        </span>
+                    </span>
                 </p>
+
+                <p class="text-3xl font-bold">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</p>
             </div>
         </div>
 

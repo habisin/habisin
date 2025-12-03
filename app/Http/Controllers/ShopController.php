@@ -43,7 +43,7 @@ class ShopController extends Controller
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'logo' => $logoPath,
-            'is_active' => false,
+            'is_active' => true,
             'balance' => 0,
         ]);
 
@@ -63,8 +63,10 @@ class ShopController extends Controller
 
         // Shop statistics
         $totalProducts = $shop->products()->count();
-        $totalSales = 0; // TODO: Implement sales calculation
-        $totalRevenue = 0; // TODO: Implement revenue calculation
+        $totalSales = $shop->orders()->where('status', 'completed')->count();
+        $totalRevenue = $shop->orders()
+            ->where('status', 'completed')
+            ->sum('total_cost');
 
         return view('merchant.dashboard', compact('shop', 'totalProducts', 'totalSales', 'totalRevenue'));
     }
