@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
@@ -52,7 +53,7 @@ Route::middleware(['auth', 'role:user'])
         // Buyer routes can be added here
         Route::get('/shops', [ShopController::class, 'publicList'])->name('shops');
         Route::get('/shops/{shop}', [ShopController::class, 'show'])->name('shops.show');
-        Route::post('/order/checkout')->name('order.checkout'); // To be implemented
+        Route::post('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout'); // To be implemented
 });
 
 require __DIR__.'/auth.php';

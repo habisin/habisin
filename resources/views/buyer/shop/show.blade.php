@@ -47,6 +47,15 @@
             <p class="text-gray-500">Produk belum tersedia.</p>
         @endif
 
+        @if ($errors->any())
+            <div class="mb-4 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
+
+
         <div class="grid grid-cols-1 gap-6">
 
             <form method="POST" action="{{ route('buyer.order.checkout') }}">
