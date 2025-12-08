@@ -51,6 +51,6 @@ class RegisteredUserController extends Controller
         if ($user->role === 'merchant') {
             return redirect()->route('merchant.onboarding');
         }
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('buyer.shops', absolute: false));
     }
 }

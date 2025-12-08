@@ -44,6 +44,7 @@
         <a href="#benefit-seller" class="block px-6 py-3 hover:bg-gray-100">Untuk Toko</a>
         <a href="#benefit-buyer" class="block px-6 py-3 hover:bg-gray-100">Untuk Pembeli</a>
         <a href="#sdgs" class="block px-6 py-3 hover:bg-gray-100">SDGs</a>
+        <a href="/login" class="block px-6 py-3 hover:bg-gray-100">Masuk</a>
         <a href="/register"
            class="block px-6 py-3 bg-teal-600 text-white hover:bg-teal-700">
             Daftar
