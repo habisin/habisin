@@ -25,6 +25,17 @@ class OrderController extends Controller
         return view('merchant.orders.index', compact('shop', 'orders'));
     }
 
+    public function buyerOrders() {
+        $user = auth()->user();
+        $orders = $user->orders()->with('shop', 'items.product')->orderBy('created_at', 'desc')->get();
+        return view('buyer.orders.index', compact('orders'));
+    }
+
+    public function pay(Order $order)
+    {
+        echo "To be implemented";
+    }
+
     public function update(Request $request, Order $order)
     {
         $request->validate([

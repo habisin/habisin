@@ -50,10 +50,14 @@ Route::middleware(['auth', 'role:merchant'])
 Route::middleware(['auth', 'role:user'])
     ->name('buyer.')
     ->group(function () {
-        // Buyer routes can be added here
+        // Toko
         Route::get('/shops', [ShopController::class, 'publicList'])->name('shops');
         Route::get('/shops/{shop}', [ShopController::class, 'show'])->name('shops.show');
-        Route::post('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout'); // To be implemented
+        
+        // Pesanan
+        Route::get('/orders', [OrderController::class, 'buyerOrders'])->name('orders');
+        Route::post('/order/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
+        Route::get('/orders/{order}/pay', [OrderController::class, 'pay'])->name('orders.pay');
 });
 
 require __DIR__.'/auth.php';
